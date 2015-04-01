@@ -1,5 +1,4 @@
-Acoustics is an app that plays ambient, realistic sounds to help focus while working and avoid 
-distractions.
+Acoustics is an app that plays ambient, realistic sounds to help focus while working and avoid distractions.
 
 DEPENDENCIES
 ------------
@@ -10,8 +9,8 @@ appindicator3
 
 INSTALLATION
 ------------
-Currently there is no extensive installation process. The 'install.sh' script will move the 
-contents of the 'share' directoy to ~/.local/share/ so that the app can load them at run time.
+Currently there is no extensive installation process. The 'install.sh' 
+script will move the contents of the 'share' directory to ~/.local/share/ so that the app can load them at run time.
 
 CREDITS
 -------
