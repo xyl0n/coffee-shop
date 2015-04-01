@@ -1,0 +1,23 @@
+Acoustics is an app that plays ambient, realistic sounds to help focus while working and avoid 
+distractions.
+
+DEPENDENCIES
+------------
+python2 
+gtk3
+mplayer
+appindicator3
+
+INSTALLATION
+------------
+Currently there is no extensive installation process. The 'install.sh' script will move the 
+contents of the 'share' directoy to ~/.local/share/ so that the app can load them at run time.
+
+CREDITS
+-------
+Restaurant sound - https://youtu.be/uL7eVZtUFvs
+Waves - https://youtu.be/0s5GmDrKrjk
+Fire - https://youtu.be/lQPdYRh3CME
+Rain - http://freesound.org/people/causative/sounds/102674/
+Thunder - https://youtu.be/CnJ_1nTaRUw
+Wind - https://youtu.be/whegxuQGERw
