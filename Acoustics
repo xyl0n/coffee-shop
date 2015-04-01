@@ -336,7 +336,7 @@ class App (object):
                 print line
                 # This plays the sound again (i.e. loops it) once it has finished
                 if 'EOF code: 1' in line:
-                    self.player.load_file (self.player.sound_file)
+                    player.load_file (player.sound_file)
 
 if __name__ == '__main__':
     Gtk.init ()
