@@ -180,6 +180,7 @@ class App (object):
         # Variables
         self.global_vol = 100
         self.app_state = self.State.PLAYING
+        self.running = True # This is to signal the EOF detector thread to close down
 
         if sys.platform == 'linux2':
             home = os.path.expanduser("~")
@@ -201,7 +202,7 @@ class App (object):
                 player_name = line[:separator_index]
                 volume = float(line[separator_index + 1:newline_index])
                 print volume
-                if player_name == "global": # TODO: fix this
+                if player_name == "global":
                     self.player_volumes[player_name] = volume 
                 else:
                     for player in self.player_list:
@@ -268,7 +269,8 @@ class App (object):
     def on_delete (self, *args):
         for player in self.player_list:
             player.quit ()
-            
+        
+        self.running = False
         self.output_thread.join ()
         # Write to config file
         with open (self.data_dir + "config", 'r') as config_file:
@@ -331,12 +333,16 @@ class App (object):
             player.pause () # This pauses if playing and plays if paused
         
     def read_output (self):
-        for player in self.player_list:
-            for line in iter(player.mplayer.stdout.readline, b''):
-                print line
-                # This plays the sound again (i.e. loops it) once it has finished
-                if 'EOF code: 1' in line:
-                    player.load_file (player.sound_file)
+        while self.running:
+            for player in self.player_list:
+                for line in iter(player.mplayer.stdout.readline, b''):
+                    print line
+                    # This plays the sound again (i.e. loops it) once it has finished
+                    if 'EOF code: 1' in line:
+                        player.load_file (player.sound_file)
+                        break # Break this loop and move on to the next one
+                else:
+                    continue
 
 if __name__ == '__main__':
     Gtk.init ()
