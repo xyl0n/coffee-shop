@@ -21,7 +21,7 @@ class MPlayer(object):
                 
         self.sound_file = '' # This stores the sound file location
         self.name = '' # This stores the name to be read by other classes
-        self.volume = 100 # To allow classes to access the output volume
+        self.volume = 0 # To allow classes to access the output volume
 
     def load_file (self, filename):
         self.sound_file = filename
@@ -247,9 +247,12 @@ class App (object):
 
         self.indicator.set_menu (indicator_menu)
 
-        # Start a new thread to collect any output from mplayer
-        self.output_thread = Thread (target = self.read_output)
-        self.output_thread.start ()
+        # Start a threads to collect any output from mplayer
+        self.thread_list = []        
+        for player in self.player_list:
+            output_thread = Thread (target = self.read_output, args = [player])
+            output_thread.start ()
+            self.thread_list.append (output_thread)
         
     def populate_player_list (self):
         sound_list = os.listdir (self.sound_dir)
@@ -271,7 +274,9 @@ class App (object):
             player.quit ()
         
         self.running = False
-        self.output_thread.join ()
+        for thread in self.thread_list:
+            thread.join ()
+        
         # Write to config file
         with open (self.data_dir + "config", 'r') as config_file:
             lines = config_file.readlines ()
@@ -308,6 +313,7 @@ class App (object):
     # I have no idea why 'args' is needed, but the needed parameters start from
     # player and if you don't put a parameter before that then python complains about
     # tuples :(
+    # tl;dr: I'm bad at python
     
     def on_player_volume_change (self, args, volume, player):
         # The individual volume sliders show how much percent of the total output volume
@@ -332,17 +338,13 @@ class App (object):
         for player in self.player_list:
             player.pause () # This pauses if playing and plays if paused
         
-    def read_output (self):
+    def read_output (self, player):
         while self.running:
-            for player in self.player_list:
-                for line in iter(player.mplayer.stdout.readline, b''):
-                    print line
-                    # This plays the sound again (i.e. loops it) once it has finished
-                    if 'EOF code: 1' in line:
-                        player.load_file (player.sound_file)
-                        break # Break this loop and move on to the next one
-                else:
-                    continue
+            for line in iter(player.mplayer.stdout.readline, b''):
+                print line
+                # This plays the sound again (i.e. loops it) once it has finished
+                if 'EOF code: 1' in line:
+                    player.load_file (player.sound_file)
 
 if __name__ == '__main__':
     Gtk.init ()
