@@ -16,7 +16,7 @@ class MPlayer(object):
                 
         self.sound_file = '' # This stores the sound file location
         self.name = '' # This stores the name to be read by other classes
-        self.volume = 0 # To allow classes to access the output volume
+        self.volume = 0 # To allow classes to access the output volume   
 
     def load_file (self, filename):
         self.sound_file = filename
@@ -29,13 +29,13 @@ class MPlayer(object):
         
     def set_volume (self, vol):
         self.volume = vol
-        self.mplayer.stdin.write('set volume ' + str (vol) + '\n')
+        self.mplayer.stdin.write('pausing_keep set volume ' + str (vol) + '\n')
         
-    def mute (self): self.mplayer.stdin.write('mute 1\n')
+    def mute (self): self.mplayer.stdin.write('pausing_keep mute 1\n')
          
     def quit (self):
         self.mplayer.stdin.write('quit\n')
         self.mplayer.kill ()
         return
         
-    def pause (self): self.mplayer.stdin.write ('pause\n') # Confusingly, this pauses AND plays it
+    def pause (self): self.mplayer.stdin.write ('pause\n') # Confusingly, this pauses and plays it

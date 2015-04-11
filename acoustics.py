@@ -62,7 +62,7 @@ class App (object):
         # GUI
         self.win = Window (self.player_list, self.icon_dir, self.player_volumes)
         self.win.connect ("delete-event", self.on_window_close)
-        self.win.app_vol.connect ('value-changed', self.on_app_volume_change)
+        self.win.app_vol.connect ('button-release-event', lambda widget, event: self.on_app_volume_change(widget))
         self.win.play_button.connect ('clicked', self.on_play_button_click)
         self.win.connect ('player-volume-changed', self.on_player_volume_change)
         self.win.app_vol.set_value (self.player_volumes["global"])
@@ -140,22 +140,17 @@ class App (object):
         
     def on_app_volume_change (self, slider_range):
         # Get new volume, adjust volume of tracks accordingly
-        if self.app_state is not self.State.PAUSED:
-            for player in self.player_list:
-                # Notes to help me figure out how to math:
-                # We want x percent of y percent of 100 (max volume)
-                # x is the individual volume
-                # y is the global volume
-                new_vol = (player.volume / float(100)) * (slider_range.get_value () / float (self.global_vol)) * 100
-                player.set_volume (new_vol)
+        for player in self.player_list:
+            # Notes to help me figure out how to math:
+            # We want x percent of y percent of 100 (max volume)
+            # x is the individual volume
+            # y is the global volume
+            new_vol = (player.volume / float(100)) * (slider_range.get_value () / float (self.global_vol)) * 100
+            player.set_volume (new_vol)
                 
-            self.global_vol = slider_range.get_value ()
-            self.player_volumes["global"] = self.global_vol
-        else:
-            pass
-            # This is where a command will be queued to send to the mplayer when the application 
-            # unpauses
-            
+        self.global_vol = slider_range.get_value ()
+        self.player_volumes["global"] = self.global_vol
+
     # I have no idea why 'args' is needed, but the needed parameters start from
     # player and if you don't put a parameter before that then python complains about
     # tuples :(

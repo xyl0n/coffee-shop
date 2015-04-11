@@ -26,7 +26,7 @@ class Window (Gtk.Window):
             self.set_draw_value (False)
             
             self._player = player
-            self.connect ('value-changed', lambda scale_range: \
+            self.connect ('button-release-event', lambda widget, event: \
                                                self.emit("volume-changed", self.get_value (), 
                                                           self._player))
     
