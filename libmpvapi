@@ -1,0 +1,14 @@
+LibMPV API Notes:
+
+- Create a context:
+    - mpv_create
+    - Create a callback thread [?]
+- mpv_set_option
+    - Set initial options (e.g. idle, volume etc.)
+    - Only when uninitalized
+- Initialize:
+    - mpv_initalize
+- Loop:
+    - mpv_wait_event
+- Exit
+    - mpv terminate or something

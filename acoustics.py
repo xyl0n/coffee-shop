@@ -22,13 +22,13 @@ class App (object):
         # Variables
         self.global_vol = 100
         self.app_state = self.State.PLAYING
-        self.running = True # This is to signal the EOF detector thread to close down
 
         if sys.platform == 'linux2':
             home = os.path.expanduser("~")
             self.data_dir = home + "/.local/share/acoustics/"
             self.sound_dir = self.data_dir + "sounds/"
             self.icon_dir = self.data_dir + "icons/"
+            self.mpv_conf = self.data_dir + "mpv.conf"
                                 
         # List to hold mplayer processes
         self.player_list = []
@@ -87,20 +87,13 @@ class App (object):
         quit_item.show ()
         indicator_menu.append (quit_item)
 
-        self.indicator.set_menu (indicator_menu)
-
-        # Start a threads to collect any output from mplayer
-        self.thread_list = []        
-        for player in self.player_list:
-            output_thread = Thread (target = self.read_output, args = [player])
-            output_thread.start ()
-            self.thread_list.append (output_thread)
+        self.indicator.set_menu (indicator_menu)   
         
     def populate_player_list (self):
         sound_list = os.listdir (self.sound_dir)
         sound_list.sort ()
         for sound in sound_list:
-            player = MPlayer ()
+            player = MPlayer (self.mpv_conf)
             player.load_file (self.sound_dir + sound)
             self.player_list.append (player)
         
@@ -112,13 +105,8 @@ class App (object):
         return True    
         
     def on_delete (self, *args):
-        for player in self.player_list:
-            player.quit ()
-        
-        self.running = False
-        for thread in self.thread_list:
-            thread.join ()
-        
+        [player.quit() for player in self.player_list]
+                
         # Write to config file
         with open (self.data_dir + "config", 'r') as config_file:
             lines = config_file.readlines ()
@@ -172,21 +160,12 @@ class App (object):
         if self.app_state is self.State.PLAYING:
             button.set_image (self.win.play_img)
             self.app_state = self.State.PAUSED
+            [player.pause() for player in self.player_list]
         else:
             button.set_image (self.win.pause_img)
             self.app_state = self.State.PLAYING
-                
-        for player in self.player_list:
-            player.pause () # This pauses if playing and plays if paused                  
-        
-    def read_output (self, player):
-        while self.running:
-            for line in iter(player.mplayer.stdout.readline, b''):
-                print line
-                # This plays the sound again (i.e. loops it) once it has finished
-                if 'EOF code: 1' in line:
-                    player.load_file (player.sound_file)
-
+            [player.play() for player in self.player_list]
+           
 if __name__ == '__main__':
     Gtk.init ()
     app = App ()       
