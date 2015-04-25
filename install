@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Installing local files..."
+
+cd scripts
+python2 local_install.py
+
+echo "Installing application..."
+
+cd ..
+sudo python2 setup.py install
+

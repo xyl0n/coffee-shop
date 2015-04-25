@@ -25,7 +25,8 @@ class App (object):
 
         if sys.platform == 'linux2':
             home = os.path.expanduser("~")
-            self.data_dir = home + "/.local/share/acoustics/"
+            self.local_dir = home + "/.local/share/acoustics/"
+            self.data_dir = "/usr/share/acoustics/"
             self.sound_dir = self.data_dir + "sounds/"
             self.icon_dir = self.data_dir + "icons/"
             self.mpv_conf = self.data_dir + "mpv.conf"
@@ -36,7 +37,7 @@ class App (object):
         
         # Create a dictionary to hold volumes for different sounds
         self.player_volumes = {}
-        with open (self.data_dir + "config", 'r') as config_file:
+        with open (self.local_dir + "config", 'r') as config_file:
             line = config_file.readline()
             while line:
                 separator_index = line.rfind(":")
@@ -108,7 +109,7 @@ class App (object):
         [player.quit() for player in self.player_list]
                 
         # Write to config file
-        with open (self.data_dir + "config", 'r') as config_file:
+        with open (self.local_dir + "config", 'r') as config_file:
             lines = config_file.readlines ()
         
         line_no = 0
@@ -118,7 +119,7 @@ class App (object):
             if line_no + 1 is not len(lines):
                 line_no = line_no + 1 
         
-        with open (self.data_dir + "config", 'w') as config_file:
+        with open (self.local_dir + "config", 'w') as config_file:
             config_file.writelines(lines)
             
         config_file.close ()

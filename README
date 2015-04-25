@@ -4,13 +4,12 @@ DEPENDENCIES
 ------------
 python2 
 gtk3
-mplayer
+mpv
 appindicator3
 
 INSTALLATION
 ------------
-Currently there is no extensive installation process. The 'install.sh' 
-script will move the contents of the 'share' directory to ~/.local/share/ so that the app can load them at run time.
+To install, simply run the file named 'install' and give your password when prompted.
 
 CREDITS
 -------
