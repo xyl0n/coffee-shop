@@ -2,7 +2,7 @@
 
 import shutil, glob, os
 
-home = os.path.expanduser('~') + '/.local/share/acoustics'
+home = os.path.expanduser('~') + '/.local/share/coffee-shop'
 if not os.path.exists(home):
     os.mkdir(home)
     

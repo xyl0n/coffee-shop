@@ -3,19 +3,19 @@
 import os, sys, glob, DistUtilsExtra.auto
 
 # Create data files
-data = [ ('/usr/share/acoustics', glob.glob('acoustics/*')),
+data = [ ('/usr/share/coffee-shop', glob.glob('coffee-shop/*')),
          ('/usr/bin', glob.glob ('bin/*')),
-         ('/usr/share/acoustics/icons', glob.glob('share/acoustics/icons/*')),
-         ('/usr/share/acoustics/sounds', glob.glob('share/acoustics/sounds/*')),
+         ('/usr/share/coffee-shop/icons', glob.glob('share/coffee-shop/icons/*')),
+         ('/usr/share/coffee-shop/sounds', glob.glob('share/coffee-shop/sounds/*')),
          ('/usr/share/icons/hicolor/scalable/apps', glob.glob('share/icons/scalable/*')),
-         ('/usr/share/applications', glob.glob('share/acoustics.desktop')),
-         ('/usr/share/acoustics', glob.glob('share/acoustics/mpv.conf')) ]
+         ('/usr/share/applications', glob.glob('share/coffee-shop.desktop')),
+         ('/usr/share/coffee-shop', glob.glob('share/coffee-shop/mpv.conf')) ]
 
 # Setup stage
 DistUtilsExtra.auto.setup(
-    name         = "acoustics",
+    name         = "coffee-shop",
     version      = "0.1",
-    description  = "Acoustics Noise Player",
+    description  = "Coffee Shop Noise Player",
     author       = "Aporva Varshney",
     author_email = "",
     url          = "",

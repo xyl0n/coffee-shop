@@ -3,9 +3,11 @@
 import os, subprocess, sys, errno
 from threading import Thread
 from gi.repository import GObject, Gtk, GLib
+from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import AppIndicator3 as appindicator
 from mplayer import MPlayer
 from interface import Window
+from mpris import Mpris
                                                     
 class App (object):
     
@@ -25,8 +27,8 @@ class App (object):
 
         if sys.platform == 'linux2':
             home = os.path.expanduser("~")
-            self.local_dir = home + "/.local/share/acoustics/"
-            self.data_dir = "/usr/share/acoustics/"
+            self.local_dir = home + "/.local/share/coffee-shop/"
+            self.data_dir = "/usr/share/coffee-shop/"
             self.sound_dir = self.data_dir + "sounds/"
             self.icon_dir = self.data_dir + "icons/"
             self.mpv_conf = self.data_dir + "mpv.conf"
@@ -70,7 +72,7 @@ class App (object):
 
         # Indicator
         self.indicator = appindicator.Indicator.new (
-                                         "acoustics",
+                                         "coffee-shop",
                                          "app-icon",
                                          appindicator.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_icon_theme_path (self.icon_dir)
@@ -89,6 +91,8 @@ class App (object):
         indicator_menu.append (quit_item)
 
         self.indicator.set_menu (indicator_menu)   
+        
+        mpris = Mpris ('coffee-shop')
         
     def populate_player_list (self):
         sound_list = os.listdir (self.sound_dir)
@@ -168,6 +172,7 @@ class App (object):
             [player.play() for player in self.player_list]
            
 if __name__ == '__main__':
+    DBusGMainLoop(set_as_default=True)
     Gtk.init ()
     app = App ()       
     Gtk.main ()

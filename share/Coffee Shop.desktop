@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=0.1
+Name=Coffee Shop
+Comment=Acoustics Noise Player
+Exec=coffee-shop
+Icon=coffee-shop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Player;
+Keywords=Player;Audio;
+X-Ubuntu-Gettext-Domain=coffee-shop
+Name[en_GB]=Coffee Shop
+Comment[en_GB.utf8]=Coffee Shop Noise Player

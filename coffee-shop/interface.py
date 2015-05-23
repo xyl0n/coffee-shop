@@ -32,8 +32,8 @@ class Window (Gtk.Window):
     
     
     def __init__(self, player_list, icon_path, player_volumes):
-        Gtk.Window.__init__(self, title = "Acoustics")
-        self.set_wmclass ("Acoustics", "Acoustics")
+        Gtk.Window.__init__(self, title = "Coffee Shop")
+        self.set_wmclass ("Coffee Shop", "Coffee Shop")
         self.set_default_size (475, 375)
         self.build_ui ()
         self.build_player_controls (player_list, icon_path, player_volumes)
@@ -44,8 +44,10 @@ class Window (Gtk.Window):
         # Headerbar
         self.header = Gtk.HeaderBar ()
         self.header.set_show_close_button (True)
-        self.header.set_title ("Acoustics")
+        self.header.set_title ("Coffee Shop")
+        self.header.get_style_context ().remove_class ('header-bar')
         self.header.get_style_context ().add_class ('titlebar')
+        self.header.get_style_context ().add_class ('background')
         self.set_titlebar (self.header)
 
         # Layouts
